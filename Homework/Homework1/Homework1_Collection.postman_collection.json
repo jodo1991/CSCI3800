@@ -1,0 +1,54 @@
+{
+	"id": "5ae056c7-489b-16cb-865c-1beb79a835e1",
+	"name": "Homework1_Collection",
+	"description": "Automated chained request for book named \"Turing\"",
+	"order": [
+		"c8296f3d-25fe-4bfd-2713-c95d2a5b23ea",
+		"23963b1c-b379-e7ce-71b0-2aa4caf9b153"
+	],
+	"folders": [],
+	"timestamp": 1486076124232,
+	"owner": "1506303",
+	"public": false,
+	"requests": [
+		{
+			"id": "23963b1c-b379-e7ce-71b0-2aa4caf9b153",
+			"headers": "",
+			"url": "https://www.googleapis.com/books/v1/volumes/{{id}}",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "5ae056c7-489b-16cb-865c-1beb79a835e1",
+			"data": null,
+			"dataMode": "params",
+			"name": "https://www.googleapis.com/books/v1/volumes/{{id}}",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1486164609860,
+			"version": 2,
+			"responses": [],
+			"tests": "tests[\"Status is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"ID Matches Request\"] = jsonData[\"id\"] === environment.id",
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "c8296f3d-25fe-4bfd-2713-c95d2a5b23ea",
+			"headers": "",
+			"url": "https://www.googleapis.com/books/v1/volumes?q={{book_title}}",
+			"preRequestScript": "postman.setEnvironmentVariable(\"book_title\", \"Turing\");",
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"id\",\"none\")\n\nfor(var count = 0;count < jsonData[\"items\"].length; count++){\n    var title = jsonData[\"items\"][count][\"volumeInfo\"][\"title\"]\n    tests[\"Books have Turing\"] = (title.has(\"Turing\") || title.has(\"turing\"))\n    if (title === \"Turing\"){\n        postman.setEnvironmentVariable(\"id\", jsonData[\"items\"][count][\"id\"]);\n    }\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1486164628299,
+			"name": "https://www.googleapis.com/books/v1/volumes?q={{book_title}}",
+			"description": "",
+			"collectionId": "5ae056c7-489b-16cb-865c-1beb79a835e1",
+			"responses": []
+		}
+	]
+}
