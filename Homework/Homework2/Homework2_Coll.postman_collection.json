@@ -1,0 +1,557 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Homework2_Coll",
+		"_postman_id": "678213a5-0eb3-d65e-56bf-efb9a5ca4e83",
+		"description": "Tests for homework2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://jodo1991-test.apigee.net/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Base path is rejected\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Base path"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/gets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"tests[\"Query default message\"] = jsonData[\"noquery\"] === \"No queries entered\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/gets",
+				"method": "GET",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "successful gets\n"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/gets?query=query value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"",
+							"tests[\"Query info returned\"] = jsonData[\"query\"][\"query\"] === \"query value\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/gets?query=query value",
+				"method": "GET",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "gets request with query"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/gets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/gets",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "bad gets (post)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/gets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/gets",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": "bad gets (put)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/gets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/gets",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": "bad gets (delete)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"tests[\"Query default message\"] = jsonData[\"noquery\"] === \"No queries entered\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/posts",
+				"method": "POST",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "good post no query"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/posts?query=query value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"",
+							"tests[\"Query info returned\"] = jsonData[\"query\"][\"query\"] === \"query value\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/posts?query=query value",
+				"method": "POST",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "good posts with query"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/posts",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "bad post (get)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/posts",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": "bad post (put)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/posts",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": "bad post (delete)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/puts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"tests[\"Query default message\"] = jsonData[\"noquery\"] === \"No queries entered\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/puts",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "good put no query"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/puts?query=query value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"",
+							"tests[\"Query info returned\"] = jsonData[\"query\"][\"query\"] === \"query value\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/puts?query=query value",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "good put with query"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/puts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/puts",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "bad put (gets)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/puts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/puts",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "bad put (post)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/puts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/puts",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": "bad put (delete)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/deletes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"tests[\"Query default message\"] = jsonData[\"noquery\"] === \"No queries entered\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/deletes",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "good delete no query"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/deletes?query=query value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status is 200\"] = responseCode.code === 200",
+							"tests[\"Headers sent back\"] = jsonData[\"headers\"][\"testkey\"] === \"testvalue\"",
+							"",
+							"tests[\"Query info returned\"] = jsonData[\"query\"][\"query\"] === \"query value\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/deletes?query=query value",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "testkey",
+						"value": "testvalue",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "good delete with query"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/deletes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/deletes",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "bad delete (get)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/deletes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/deletes",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "bad delete (post)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://jodo1991-test.apigee.net/deletes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Rejected bad method\"] = responseCode.code === 405"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/deletes",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": "bad delete (put)"
+			},
+			"response": []
+		}
+	]
+}
