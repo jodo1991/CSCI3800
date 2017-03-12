@@ -1,0 +1,182 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Homework3_Collection",
+		"_postman_id": "44470950-c2d9-e477-be97-a8a065c93a8d",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Bad oauth request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Response is 401\"] = responseCode.code === 401"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://jodo1991-test.apigee.net/oauth/client_credential/accesstoken?grant_type=client_credentials",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "client_id",
+							"value": "wH4V6xywf8AVwcpUbj3ZIHx3dARTSZ8G",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "client_secret",
+							"value": "H8ibXCHuMcAJrUvca",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "bad run of oauth request"
+			},
+			"response": []
+		},
+		{
+			"name": "Unauthorized resource request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Unauthorized without token\"] = responseCode.code === 401"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework3/homework3/getUserInfo",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "bad resource request (no token)"
+			},
+			"response": []
+		},
+		{
+			"name": "Good oauth request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response is 200\"] = responseCode.code === 200",
+							"tests[\"Token for correct product\"] = json.api_product_list_json[0] === \"Homework3Product\"",
+							"",
+							"postman.setEnvironmentVariable(\"access_token\", json.access_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://jodo1991-test.apigee.net/oauth/client_credential/accesstoken?grant_type=client_credentials",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "wH4V6xywf8AVwcpUbj3ZIHx3dARTSZ8G",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "client_secret",
+							"value": "H8ibXCHuMcAJrUvc",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Good run of getting oauth token"
+			},
+			"response": []
+		},
+		{
+			"name": "Authorized resource request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"",
+							"tests[\"Response is 200\"] = responseCode.code === 200",
+							"tests[\"Response is for correct user\"] = json.response.login === \"jodo1991\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework3/homework3/getUserInfo",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "good resource request (with valid token)"
+			},
+			"response": []
+		},
+		{
+			"name": "Disallowed method request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Authorized but method not allowed\"] = responseCode.code === 405",
+							"",
+							"var json = JSON.parse(responseBody)",
+							"tests[\"List only acceptable methods\"] = json.allowedMethods.length === 1 && json.allowedMethods[0] === \"GET\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework3/homework3/getUserInfo",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "post with token (not allowed)"
+			},
+			"response": []
+		}
+	]
+}
