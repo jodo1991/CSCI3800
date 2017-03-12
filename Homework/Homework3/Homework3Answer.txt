@@ -1,0 +1,4 @@
+Give one reason (there are many) OAuth tokens should not be granted in the main flow,
+assuming the user has sent in the correct credentials.
+
+One reason you should separate oauth from the main flow is to decrease your attack surface. Since the main flow will be taking the majority of the requests, and will likely have the most complex code, it will be the most vulnerable. By isolating the Oauth proxy, you reduce the potential of it being attacked.
