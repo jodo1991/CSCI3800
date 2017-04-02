@@ -1,0 +1,352 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Homework4_Collection",
+		"_postman_id": "1fd99d0f-22f7-f479-1502-162c7f98a165",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initial Get All Movies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"",
+							"tests[\"Response is 200\"] = responseCode.code === 200",
+							"tests[\"At least 5 entries in db\"] = json.length >= 5",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/getAll",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Bad Post - No Title",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"tests[\"Title required error\"] = json.title.message === \"Path `title` is required.\"",
+							"tests[\"Status is 400\"] = responseCode.code === 400"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/postOne",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"\",\n\t\"year\": 2005,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Bad Post - Min Year",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"tests[\"Invalid year\"] = json.yearRel.message === \"Path `yearRel` (1) is less than minimum allowed value (1800).\"",
+							"tests[\"Status is 400\"] = responseCode.code === 400"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/postOne",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 1,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Bad Post - Max Year",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"tests[\"Invalid year\"] = json.yearRel.message === \"Path `yearRel` (2021) is more than maximum allowed value (2020).\"",
+							"tests[\"Status is 400\"] = responseCode.code === 400"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/postOne",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 2021,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Bad Post - Not enough actors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"tests[\"Not enough actors\"] = json.actors.message === \"Need at least three actors!\"",
+							"tests[\"Status is 400\"] = responseCode.code === 400"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/postOne",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 2021,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\"\n\t\t\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Good Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Success Response\"] = responseBody.includes(\"testTitle added to database\")",
+							"tests[\"Status is 200\"] = responseCode.code === 200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/postOne",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 2017,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"\n\t\t\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All - Check for Posted Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"tests[\"Posted movie is in db\"] = json[5].title === \"testTitle\"",
+							"tests[\"Status is 200\"] = responseCode.code === 200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/getAll",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 2017,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"\n\t\t\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get One - Check for Posted Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"tests[\"Returned correct movie\"] = json.title === \"testTitle\"",
+							"tests[\"Status is 200\"] = responseCode.code === 200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/getOne?title=testTitle",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 2017,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"\n\t\t\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get One - Not in DB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status is 204\"] = responseCode.code === 204"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/getOne?title=abcdef",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 2017,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"\n\t\t\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Posted Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status is 200\"] = responseCode.code === 200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/deleteOne?title=testTitle",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get One - Check for Deleted Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status is 204\"] = responseCode.code === 204"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://jodo1991-test.apigee.net/homework4/getOne?title",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"testTitle\",\n\t\"year\": 2017,\n\t\"actors\":[\n\t\t\t\"test_a1\",\n\t\t\t\"test_a2\",\n\t\t\t\"test_a3\"\n\t\t\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
